@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: [
+      "fakestoreapi.com",
+      "img.freepik.com",
+      "res.cloudinary.com" // ✅ Added safely here
+    ],
+  },
 };
 
 export default nextConfig;
