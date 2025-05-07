@@ -5,7 +5,8 @@ const nextConfig: NextConfig = {
     domains: [
       "fakestoreapi.com",
       "img.freepik.com",
-      "res.cloudinary.com" // ✅ Added safely here
+      "res.cloudinary.com",
+      "cdn.punchng.com"
     ],
   },
 };

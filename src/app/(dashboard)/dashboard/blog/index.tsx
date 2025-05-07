@@ -26,7 +26,7 @@ const Blog = ({ blogs }: { blogs: BlogType[] }) => {
               <Image
                 src={blog.image}
                 alt="Blog Image"
-                className="w-full h-48 object-cover"
+                className="w-full h-56 object-cover"
                 width={300}
                 height={300}
               />
