@@ -1,15 +1,16 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import StarRating from "../component/StarRating";
 
 type Product = {
-  id: number;
+  _id: number;
   name: string;
   description: string;
   category: string;
   image: string;
   price: number;
-  rating: number
+  rating: number;
 };
 
 const ProductTwp = () => {
@@ -37,8 +38,8 @@ const ProductTwp = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen w-screen">
-      <div className="text-xl font-semibold">Loading...</div>
-    </div>
+        <div className="text-xl font-semibold">Loading...</div>
+      </div>
     );
   }
 
@@ -47,7 +48,7 @@ const ProductTwp = () => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((prod) => (
           <div
-            key={prod.id}
+            key={prod._id}
             className="bg-white shadow-md rounded-lg overflow-hidden transition-transform transform hover:scale-105"
           >
             <div className="relative w-full h-52">
@@ -59,34 +60,20 @@ const ProductTwp = () => {
               />
             </div>
             <div className="md:p-4 p-2 ">
-              <h2 className="text-center font-semibold truncate">{prod.name}</h2>
+              <h2 className="text-center font-semibold truncate">
+                {prod.name}
+              </h2>
               <div className="flex justify-between  text-black">
-                    {/* Rating */}
-                    <div className="flex items-center ">
-                      {[...Array(5)].map((_, i) => (
-                        <span
-                          key={i}
-                          className={`text-xs sm:text-sm ${
-                            i < Math.floor(prod.rating)
-                              ? "text-[#ff8f08]"
-                              : "text-gray-400"
-                          }`}
-                        >
-                          ★
-                        </span>
-                      ))}
-                      <span className="ml-1 text-xs sm:text-sm font-semibold text-black">
-                        {prod.rating}
-                      </span>
-                    </div>
-
-                    {/* Price */}
-                    <span className="text-sm font-bold text-[#ff8f08] md:px-4 mb-1">
-                      ₦{prod.price}
-                    </span>
-                  </div>
-                  <button className="flex px-6 py-1 w-full rounded-full mx-auto text-white self-center justify-center bg-[#ff8f08]">BOOK NOW</button>
-
+                {/* Rating */}
+                <StarRating rating={prod.rating} idPrefix={`prod-${prod._id}`} />
+                {/* Price */}
+                <span className="text-sm font-bold text-[#ff8f08] md:px-4 mb-1">
+                  ₦{prod.price}
+                </span>
+              </div>
+              <button className="flex px-6 py-1 w-full rounded-full mx-auto text-white self-center justify-center bg-[#ff8f08]">
+                BOOK NOW
+              </button>
             </div>
           </div>
         ))}
