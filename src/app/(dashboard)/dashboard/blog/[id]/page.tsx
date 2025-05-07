@@ -1,8 +1,14 @@
 import React from "react";
 import SingleBlog from ".";
 
-const Page = async ({ params }: { params: { id: string } }) => {
-  const id = params.id;
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+const Page = async ({ params }: PageProps) => {
+  const { id } = params; // Access the id from params
 
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
 

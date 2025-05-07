@@ -1,10 +1,13 @@
 import React from "react";
-import { BlogType } from "../type";
-import Image from "next/image";
+import { BlogType } from "../type"; // Ensure this is the correct type for the blog
 import UpdateBlog from "./components/update-blog";
 import DeleteBlog from "./components/delete-blog";
 
-const SingleBlog = ({ blog }: { blog: BlogType }) => {
+type SingleBlogProps = {
+  blog: BlogType;
+};
+
+const SingleBlog = ({ blog }: SingleBlogProps) => {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
       <h1 className="text-4xl font-bold text-gray-800 mb-4">{blog.title}</h1>
@@ -13,11 +16,10 @@ const SingleBlog = ({ blog }: { blog: BlogType }) => {
       </p>
 
       <div className="w-full h-[400px] relative mb-6">
-        <Image
+        <img
           src={blog.image}
           alt={blog.title}
-          fill
-          className="object-cover rounded-lg"
+          className="object-cover rounded-lg w-full h-full"
         />
       </div>
 

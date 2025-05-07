@@ -13,11 +13,12 @@ export const GET = async () => {
   }
 };
 
+
 export const POST = async (request: Request) => {
   const blogBody = await request.json();
   console.log(blogBody);
   try {
-    await ConnectDB();
+   ConnectDB();
     const res = await blogModel.create(blogBody);
     return NextResponse.json({ message: "created success", res });
   } catch (error) {

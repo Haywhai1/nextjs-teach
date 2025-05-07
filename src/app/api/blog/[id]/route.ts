@@ -8,6 +8,24 @@ type ParamType = {
   };
 };
 
+export const GET = async (_req: Request, { params }: ParamType) => {
+  try {
+     ConnectDB();
+
+    const blog = await blogModel.findById(params.id);
+
+    if (!blog) {
+      return NextResponse.json({ message: "Blog not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(blog, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ message: "Server Error" }, { status: 500 });
+  }
+};
+
+
 export const PATCH = async (req: Request, { params }: ParamType) => {
   try {
     ConnectDB();
