@@ -2,17 +2,19 @@ import React from "react";
 import { BlogType } from "./type";
 import Link from "next/link";
 import Image from "next/image";
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 const Blog = ({ blogs }: { blogs: BlogType[] }) => {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 space-y-6">
+    <div className="max-w-6xl mx-auto px-4 py-4 space-y-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Blog Posts</h2>
         <Link
           href="/dashboard/blog/create-blog"
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+          className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition inline-flex items-center justify-center"
+          aria-label="Create New Blog"
         >
-          Create New Blog
+          <PlusIcon className="h-6 w-6" />
         </Link>
       </div>
 
