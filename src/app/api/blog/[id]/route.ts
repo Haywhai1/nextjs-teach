@@ -2,11 +2,6 @@ import { ConnectDB } from "@/lib/connect";
 import blogModel from "@/utils/model/blog.model";
 import { NextResponse } from "next/server";
 
-type ParamType = {
-  params: {
-    id: string;
-  };
-};
 
 export const GET = async (
   request: Request,
