@@ -8,7 +8,7 @@ export default async function Page({ params }: PageProps) {
   const { id } = await params; // ✅ await here
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "https://nextjs-teach.vercel.app";
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
 
   const res = await fetch(`${baseUrl}/api/blog/${id}`, {
     cache: "no-store",
