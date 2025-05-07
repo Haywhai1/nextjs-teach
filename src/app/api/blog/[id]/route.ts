@@ -8,41 +8,48 @@ type ParamType = {
   };
 };
 
-export const GET = async (_req: Request, { params }: ParamType) => {
+export const GET = async (
+  request: Request,
+  context: { params: Promise<{ id: string }> }
+) => {
+  const { id } = await context.params; // ✅ await here
+
   try {
-     ConnectDB();
+    await ConnectDB();
+    const blog = await blogModel.findById(id);
+    return NextResponse.json(blog);
+  } catch (error) {
+    return NextResponse.json({ message: "Error fetching blog", error }, { status: 500 });
+  }
+};
 
-    const blog = await blogModel.findById(params.id);
 
-    if (!blog) {
-      return NextResponse.json({ message: "Blog not found" }, { status: 404 });
-    }
 
-    return NextResponse.json(blog, { status: 200 });
+export const PATCH = async (req: Request, context: { params: { id: string } }) => {
+  const { params } = context;
+  const { id } = await params; // ✅ await here!
+
+  const blogBody = await req.json();
+
+  try {
+    await ConnectDB();
+
+    const updatedBlog = await blogModel.findByIdAndUpdate(
+      id,
+      blogBody,
+      { new: true }
+    );
+
+    return NextResponse.json(updatedBlog, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: "Server Error" }, { status: 500 });
-  }
-};
-
-
-export const PATCH = async (req: Request, { params }: ParamType) => {
-  try {
-    ConnectDB();
-    const blogBody = await req.json();
-
-    const newUpdateBlog = await blogModel.findByIdAndUpdate(
-      params.id,
-      blogBody,
-      {
-        new: true,
-      }
+    return NextResponse.json(
+      { message: "Failed to update blog" },
+      { status: 500 }
     );
-    return NextResponse.json({ message: "updated Sucess", newUpdateBlog });
-  } catch (error) {
-    return NextResponse.json(error);
   }
 };
+
 
 export const DELETE = async (req: Request, { params }: ParamType) => {
   try {

@@ -1,14 +1,11 @@
-import React from "react";
 import SingleBlog from ".";
 
 type PageProps = {
-  params: Promise<{
-    id: string;
-  }>;
+  params: Promise<{ id: string }>; // <- params is a Promise
 };
 
 export default async function Page({ params }: PageProps) {
-  const { id } = await params;
+  const { id } = await params; // ✅ await here
 
   const baseUrl =
     process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
