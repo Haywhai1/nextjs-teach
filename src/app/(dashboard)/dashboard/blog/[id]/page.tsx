@@ -1,14 +1,20 @@
 import React from "react";
 import SingleBlog from ".";
 
-interface Params {
-  id: string;
-}
+const Page = async ({ params }: { params: { id: string } }) => {
+  const id = params.id;
 
-const Page = ({ blog }: { blog: any }) => {
-  if (!blog) {
-    return <div>Blog not found</div>;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
+
+  const res = await fetch(`${baseUrl}/api/blog/${id}`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch blog with id ${id}`);
   }
+
+  const blog = await res.json();
 
   return (
     <div>
@@ -16,24 +22,5 @@ const Page = ({ blog }: { blog: any }) => {
     </div>
   );
 };
-
-// Server-side fetching with getServerSideProps
-export async function getServerSideProps({ params }: { params: Params }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blog/${params.id}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    return {
-      notFound: true, // Optional: Handle when blog is not found
-    };
-  }
-
-  const blog = await res.json();
-
-  return {
-    props: { blog },
-  };
-}
 
 export default Page;
