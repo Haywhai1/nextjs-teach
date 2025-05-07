@@ -2,6 +2,7 @@ import React from "react";
 import { BlogType } from "../type"; // Ensure this is the correct type for the blog
 import UpdateBlog from "./components/update-blog";
 import DeleteBlog from "./components/delete-blog";
+import Image from "next/image";
 
 type SingleBlogProps = {
   blog: BlogType;
@@ -15,11 +16,14 @@ const SingleBlog = ({ blog }: SingleBlogProps) => {
         By {blog.author} • {new Date(blog.createdAt).toDateString()}
       </p>
 
-      <div className="w-full h-[400px] relative mb-6">
-        <img
+      <div className="w-full h-full relative mb-6">
+        <Image
           src={blog.image}
           alt={blog.title}
-          className="object-cover rounded-lg w-full h-full"
+          className="object-cover rounded-lg"
+          width={800} // adjust based on layout
+          height={800}
+          priority
         />
       </div>
 

@@ -2,15 +2,16 @@ import React from "react";
 import SingleBlog from ".";
 
 type PageProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-const Page = async ({ params }: PageProps) => {
-  const { id } = params; // Access the id from params
+export default async function Page({ params }: PageProps) {
+  const { id } = await params;
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
 
   const res = await fetch(`${baseUrl}/api/blog/${id}`, {
     cache: "no-store",
@@ -27,6 +28,4 @@ const Page = async ({ params }: PageProps) => {
       <SingleBlog blog={blog} />
     </div>
   );
-};
-
-export default Page;
+}
