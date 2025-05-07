@@ -25,7 +25,8 @@ export const GET = async (
 
 
 
-export const PATCH = async (req: Request, context: { params: { id: string } }) => {
+export const PATCH = async (req: Request, context: { params: Promise<{ id: string }> }
+) => {
   const { params } = context;
   const { id } = await params; // ✅ await here!
 
@@ -51,12 +52,18 @@ export const PATCH = async (req: Request, context: { params: { id: string } }) =
 };
 
 
-export const DELETE = async (req: Request, { params }: ParamType) => {
+export const DELETE = async (
+  req: Request,
+  context: { params: Promise<{ id: string }> }
+) => {
+  const { id } = await context.params;
+
   try {
-    ConnectDB();
-    await blogModel.findByIdAndDelete(params.id);
+    await ConnectDB();
+    await blogModel.findByIdAndDelete(id);
     return NextResponse.json({ message: "deleted success" });
   } catch (error) {
-    return NextResponse.json(error);
+    return NextResponse.json({ message: "Failed to delete blog", error }, { status: 500 });
   }
 };
+
