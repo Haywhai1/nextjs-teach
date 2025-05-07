@@ -20,6 +20,9 @@ const Navbar = () => {
         <li>
           <Link href={"/productTwo"}>Product2</Link>
         </li>
+        <li>
+          <Link href={"/dashboard/blog-graphql"}>blog-graphql</Link>
+        </li>
       </ul>
     </div>
   );
