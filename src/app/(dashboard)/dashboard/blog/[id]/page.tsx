@@ -1,28 +1,21 @@
+// app/dashboard/blog/[id]/page.tsx
+import { getBlogById } from "@/lib/blog"; // import the shared function
 import SingleBlog from ".";
+import { log } from "console";
 
 type PageProps = {
-  params: Promise<{ id: string }>; // <- params is a Promise
+  params: Promise<{ id: string }>;
 };
 
 export default async function Page({ params }: PageProps) {
-  const { id } = await params; // ✅ await here
+  const { id } = await params;
+  const blog = await getBlogById(id); // 🚫 no fetch, direct DB access
+  console.log(blog);
+  
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
-
-  const res = await fetch(`${baseUrl}/api/blog/${id}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch blog with id ${id}`);
+  if (!blog) {
+    return <div>Blog not found</div>;
   }
 
-  const blog = await res.json();
-
-  return (
-    <div>
-      <SingleBlog blog={blog} />
-    </div>
-  );
+  return <SingleBlog blog={blog} />;
 }

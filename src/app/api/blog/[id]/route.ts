@@ -20,27 +20,41 @@ export const GET = async (
 
 
 
-export const PATCH = async (req: Request, context: { params: Promise<{ id: string }> }
-) => {
-  const { params } = context;
-  const { id } = await params; // ✅ await here!
+export const PATCH = async (req: Request, context: { params: Promise<{ id: string }> }) => {
+  const { id } = await context.params; // ✅ await here!
 
   const blogBody = await req.json();
 
   try {
     await ConnectDB();
 
-    const updatedBlog = await blogModel.findByIdAndUpdate(
-      id,
-      blogBody,
-      { new: true }
-    );
+    // Validate that required fields are present in blogBody
+    if (!blogBody.title || !blogBody.content || !blogBody.author) {
+      return NextResponse.json(
+        { message: "Missing required fields" },
+        { status: 400 }
+      );
+    }
 
+    // Attempt to update the blog document by id
+    const updatedBlog = await blogModel.findByIdAndUpdate(id, blogBody, {
+      new: true,
+    });
+
+    // If no blog found, return a 404
+    if (!updatedBlog) {
+      return NextResponse.json(
+        { message: "Blog not found" },
+        { status: 404 }
+      );
+    }
+
+    // Return the updated blog
     return NextResponse.json(updatedBlog, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Failed to update blog" },
+      { message: "Failed to update blog", error },
       { status: 500 }
     );
   }
